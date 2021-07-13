@@ -11,21 +11,37 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
+
+from django.core.exceptions import ImproperlyConfigured
+
+
+
+def get_enviroment_variable(variable_name):
+    try:
+        return os.getenv(variable_name)
+    except KeyError:
+        message = f'Enviroment variable {variable_name} not found'
+        raise ImproperlyConfigured(message)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&si(&+@1pb6c#u2v2v!n!#5t9^k=-g$p@sy!!f6#-s&tdq(ep('
+#SECRET_KEY = '&si(&+@1pb6c#u2v2v!n!#5t9^k=-g$p@sy!!f6#-s&tdq(ep('
+
+SECRET_KEY = get_enviroment_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'MyUser',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'api.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -67,8 +84,21 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'api.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
+AUTH_USER_MODEL ='MyUser.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+#get_enviroment_variable('EXPIRES')
+    'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
+    'SIGNING_KEY':get_enviroment_variable('SECRET_KEY'),
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
