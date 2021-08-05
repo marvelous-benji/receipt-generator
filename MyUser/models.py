@@ -8,11 +8,15 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .usermanager import CustomUserManager
 
 
+
+def id_hex():
+    return uuid.uuid4().hex
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_('email address'), unique=True)
     fullname = models.CharField(_('fullname'), max_length=200, blank=False, null=False)
-    business_name = models.CharField(_('business name'), max_length=255, blank=True, default='')
+    business_name = models.CharField(_('business name'), max_length=255, blank=False, null=False, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -24,5 +28,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-# Create your models here.

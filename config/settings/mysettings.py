@@ -39,9 +39,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = get_enviroment_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -53,7 +53,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'MyUser',
+    'rest_framework_simplejwt',
+    'Receipt.apps.ReceiptConfig',
+    'MyUser.apps.MyuserConfig',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+
+AUTH_USER_MODEL ='MyUser.CustomUser'
 
 TEMPLATES = [
     {
@@ -86,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-AUTH_USER_MODEL ='MyUser.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
