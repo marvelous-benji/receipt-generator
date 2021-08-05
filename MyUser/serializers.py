@@ -9,8 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        #exclude = ['id','is_superuser','is_staff']
-        fields = ['email','business_name','fullname']
+        fields = ['email','business_name','fullname','password']
         extra_kwargs = {'password': {'write_only': True},
                         'fullname':{'write_only':True}
         }
