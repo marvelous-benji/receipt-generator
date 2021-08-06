@@ -31,6 +31,8 @@ or templates for goods sold to customers.
 
 ## How To Use
 
+![Documentation url](https://documenter.getpostman.com/view/15462060/Tzm9jumT)
+
 #### Installation
 ```bash
 git clone https://github.com/marvelous-benji/receipt-generator.git
