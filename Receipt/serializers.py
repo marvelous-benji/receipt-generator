@@ -29,9 +29,12 @@ class HistorySerializer(serializers.ModelSerializer):
 	def is_valid(self, raise_Exception=False):
 
 		if self.initial_data['payment_type'] not in ['Cash', 'Cheque', 'Bank Transfer']:
-			raise serializers.ValidationError("Invalid payment_type")
-		if self.initial_data['payment_amount'] <= 0:
-			raise serializers.ValidationError("Invalid payment amount")
+			self._errors = {'status':'failed','msg':'Invalid payment type'}
+			return False
+		amount = self.initial_data['payment_amount'] 
+		if not (isinstance(amount, int) or isinstance(amount, float)) and amount <= 0:
+			self._errors = {'status':'failed','msg':'Invalid payment amount'}
+			return False
 		self._validated_data = self.initial_data
 		self._errors = {}
 		return True

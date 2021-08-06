@@ -9,8 +9,6 @@ from .usermanager import CustomUserManager
 
 
 
-def id_hex():
-    return uuid.uuid4().hex
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

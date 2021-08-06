@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'Receipt.apps.ReceiptConfig',
     'MyUser.apps.MyuserConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -95,11 +96,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 SIMPLE_JWT = {
-#get_enviroment_variable('EXPIRES')
     'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
     'SIGNING_KEY':get_enviroment_variable('SECRET_KEY'),
 }
