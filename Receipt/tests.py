@@ -92,7 +92,6 @@ class Receipt_Test(APITestCase):
         response2 = self.client.put(url, data, HTTP_AUTHORIZATION=token, format='json')
         response3 = self.client.delete(url, HTTP_AUTHORIZATION=token, format='json')
         response4 = self.client.get(url, HTTP_AUTHORIZATION=token, format='json')
-        print(response4.data)
         self.assertTrue(response1.data['status'],'success')
         self.assertTrue(response2.data['status'],'success')
         self.assertTrue(response3.status_code,status.HTTP_204_NO_CONTENT)
