@@ -15,6 +15,10 @@ from MyUser.serializers import UserSerializer
 
 class ReceiptTemplate(APIView):
 
+    '''
+    Generates receipt templates for business owners
+    '''
+
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -54,6 +58,11 @@ class ReceiptTemplate(APIView):
 
 
 class ReceiptList(APIView):
+    '''
+    Issues receipts  to customers.
+    Get lists of all receipt issued
+    by a business owner
+    '''
 
 
     authentication_classes = [JWTAuthentication]
@@ -104,6 +113,10 @@ class ReceiptList(APIView):
 
 
 class ReceiptDetail(APIView):
+    '''
+    Enables Read, Update and Delete operations
+    on receipt histories issued by its business
+    '''
 
 
     authentication_classes = [JWTAuthentication]
@@ -144,7 +157,6 @@ class ReceiptDetail(APIView):
         try:
             data = request.data
             issued_receipt = self.get_issued_receipt(request.user, receipt_id)
-            print(issued_receipt.receipt_id)
             if not issued_receipt:
                 return Response(
                             {'status':'failed','msg':'Receipt not found'},
@@ -175,7 +187,6 @@ class ReceiptDetail(APIView):
 
         try:
             issued_receipt = self.get_issued_receipt(request.user, receipt_id)
-            print(issued_receipt)
             if not issued_receipt:
                 return Response(
                             {'status':'failed','msg':'Receipt not found'},

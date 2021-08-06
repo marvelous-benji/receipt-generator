@@ -28,6 +28,14 @@ class HistorySerializer(serializers.ModelSerializer):
 
 	def is_valid(self, raise_Exception=False):
 
+		'''
+		Overiding the is_valid method of the serializer class
+		is neccessary as it raises uniqueness error in nested
+		relationship validation as it would normally do if
+		it was checking uniqueness constraint in the creation
+		of the parent object
+		'''
+
 		if self.initial_data['payment_type'] not in ['Cash', 'Cheque', 'Bank Transfer']:
 			self._errors = {'status':'failed','msg':'Invalid payment type'}
 			return False
