@@ -32,7 +32,9 @@ or templates for goods sold to customers.
 ## How To Use
 
 #### Installation
-
+```bash
+git clone https://github.com/marvelous-benji/receipt-generator.git
+```
 
 
 #### API Reference
