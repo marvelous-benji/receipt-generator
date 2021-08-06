@@ -37,7 +37,7 @@ git clone https://github.com/marvelous-benji/receipt-generator.git
 ```
 
 
-#### API Reference
+#### SetUp
 
 ```python
     For Unix(that is mac or linux)
