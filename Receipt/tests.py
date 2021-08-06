@@ -94,5 +94,5 @@ class Receipt_Test(APITestCase):
         response4 = self.client.get(url, HTTP_AUTHORIZATION=token, format='json')
         self.assertTrue(response1.data['status'],'success')
         self.assertTrue(response2.data['status'],'success')
-        self.assertTrue(response3.status_code,204)
-        self.assertTrue(response4.status_code,404)
+        self.assertTrue(response3.status_code,status.HTTP_204_NO_CONTENT)
+        self.assertTrue(response4.status_code,status.HTTP_404_NOT_FOUND)
