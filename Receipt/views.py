@@ -43,7 +43,6 @@ class ReceiptTemplate(APIView):
     def get(self, request):
 
         try:
-             print(request.user)
              return Response(
                     {'status':'success','templates':self.generate_templates(request.user)},
                     status=status.HTTP_200_OK
