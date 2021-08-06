@@ -34,6 +34,11 @@ or templates for goods sold to customers.
 #### Installation
 ```bash
 git clone https://github.com/marvelous-benji/receipt-generator.git
+run cd receipt-generator
+setup a virtual enviroment by running python -m venv env
+then run source env/bin/activate
+finally run pip install -r requirements.txt
+(check to see if any of these differ on windows OS)
 ```
 
 
