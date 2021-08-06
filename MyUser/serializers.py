@@ -35,6 +35,3 @@ class UserSerializer(serializers.ModelSerializer):
 def generate_access_token(user):
     tokens = RefreshToken.for_user(user)
     return str(tokens.access_token)
-
-#postgres://rfchzxqwfrffhb:d38403b36fbf0c4d6d2a8079035be16f3774a2084f7ed378e701231ed6b15827@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d52f4cuasb6jqi
-#python manage.py makemigrations --settings=config.settings.mysettings
