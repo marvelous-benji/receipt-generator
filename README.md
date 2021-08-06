@@ -31,7 +31,7 @@ or templates for goods sold to customers.
 
 ## How To Use
 
-![Documentation](https://documenter.getpostman.com/view/15462060/Tzm9jumT)
+[Documentation url] https://documenter.getpostman.com/view/15462060/Tzm9jumT
 
 #### Installation
 ```bash
