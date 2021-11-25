@@ -60,4 +60,3 @@ finally run pip install -r requirements.txt
     for windows OS use set instead of export
 
 ```
-[Back To The Top](#read-me-template)
