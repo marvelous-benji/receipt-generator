@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ReceiptConfig(AppConfig):
-    name = 'Receipt'
+    name = "Receipt"
