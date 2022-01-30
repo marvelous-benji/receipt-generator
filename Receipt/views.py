@@ -1,5 +1,6 @@
 from datetime import datetime
 from secrets import token_hex
+from random import randint
 
 from rest_framework import status
 from django.db.models import Q
@@ -8,10 +9,17 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from faker import Faker
+
+from MyUser import serializers
+
 from .serializers import HistorySerializer
 from .models import ReceiptHistory
 from MyUser.serializers import UserSerializer
 
+
+
+fake = Faker()
 
 class ReceiptTemplate(APIView):
 
@@ -24,18 +32,22 @@ class ReceiptTemplate(APIView):
 
     def generate_templates(self,user):
 
-        slips = [
-                    {
-                    'issued_by':user.business_name,
-                    'date_issued':datetime.now(),
-                    'issued_to': '',
-                    'receipt_id':token_hex(10),
-                    'payment_type': '',
-                    'payment_amount': 0.00,
-                    'payment_detail': ''
+        slips = []
+        for _ in range(10):
+            name = fake.name
+            contact = fake.country_calling_code()+fake.msisdn()
+            amount = randint(1000,100000000)
+            date = datetime.utcnow()
+            detail = f'{name} bought goods worth {amount} Naira on {date.strftime("%d %b %Y %H:%M:%S")}'
+            result = {
+                        'issued_by':user.business_name,
+                        'date_issued':date,
+                        'customer_name':name,
+                        'customer_phone_number':contact,
+                        'payment_amount': amount,
+                        'payment_detail': detail
                     }
-                    for k in range(10)
-                ]
+            slips.append(result)
 
         return slips
 
@@ -43,10 +55,14 @@ class ReceiptTemplate(APIView):
     def get(self, request):
 
         try:
-             return Response(
-                    {'status':'success','templates':self.generate_templates(request.user)},
-                    status=status.HTTP_200_OK
-                )
+            receipts = self.generate_templates(request.user)
+            serializers = HistorySerializer(data=receipts,context={'request':request})
+            if serializers.is_valid(): # will always be vaild
+                serializers.save()
+            return Response(
+                {'status':'success','receipts':receipts},
+                status=status.HTTP_200_OK
+            )
         except Exception as e:
             print(e)
             return Response(
@@ -194,7 +210,7 @@ class ReceiptDetail(APIView):
             issued_receipt.delete()
             return Response(
                         {'status':'success','msg':'Receipt deleted successfully'},
-                        status=status.HTTP_204_NO_CONTENT
+                        status=status.HTTP_200_OK
                     )
         except Exception as e:
             print(e)

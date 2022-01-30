@@ -21,7 +21,8 @@ class HistorySerializer(serializers.ModelSerializer):
 	    	'issued_by',
 	    	'payment_type',
 	    	'payment_amount',
-	    	'issued_to',
+	    	'customer_phone_number',
+			'customer_name',
 	    	'payment_detail'
 	    ]
 
@@ -36,25 +37,31 @@ class HistorySerializer(serializers.ModelSerializer):
 		of the parent object
 		'''
 
-		if self.initial_data['payment_type'] not in ['Cash', 'Cheque', 'Bank Transfer']:
-			self._errors = {'status':'failed','msg':'Invalid payment type'}
-			return False
-		amount = self.initial_data['payment_amount'] 
-		if not (isinstance(amount, int) or isinstance(amount, float)) and amount <= 0:
-			self._errors = {'status':'failed','msg':'Invalid payment amount'}
-			return False
+		if self.instance is not None:
+			return super().is_valid()
 		self._validated_data = self.initial_data
 		self._errors = {}
 		return True
 
 	def create(self, validated_data):
-		issued_by = validated_data.pop('issued_by')
-		issued_by = CustomUser.objects.get(email=issued_by['email'])
-		receipt = ReceiptHistory.objects.create(issued_by=issued_by, **validated_data)
-		return receipt
+		issuer = self.context['request'].user
+		receipts = [ReceiptHistory(
+			date_issued=data['date_issued'],
+			issued_by=issuer,
+			receipt_id=data['receipt_id'],
+			customer_name=data['customer_name'],
+			customer_phone_number=data['customer_phone_number'],
+			payment_amount=data['payment_amount'],
+			payment_detail=data['payment_detail']
+		) for data in validated_data]
+
+		ReceiptHistory.objects.bulk_create(receipts)
+		return receipts
 
 	def update(self, instance, validated_data):
 
+		instance.customer_name = validated_data.get('customer_name', instance.customer_name)
+		instance.customer_phone_number = validated_data.get('customer_phone_number', instance.customer_phone_number)
 		instance.payment_type = validated_data.get('payment_type', instance.payment_type)
 		instance.payment_amount = validated_data.get('payment_amount', instance.payment_amount)
 		instance.payment_detail = validated_data.get('payment_detail', instance.payment_detail)
