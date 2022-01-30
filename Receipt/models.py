@@ -10,10 +10,18 @@ from django.conf import settings
 
 
 def get_payment_type():
+    '''
+    Returns random payment method
+    '''
+
     return choice(["Cash", "Transfer", "Card"])
 
 
 def set_receipt_id():
+    '''
+    Generates random receipt id
+    '''
+    
     return token_hex(10)
 
 
