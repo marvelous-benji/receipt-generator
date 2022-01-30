@@ -32,6 +32,9 @@ or templates for goods sold to customers.
 
 [Documentation](https://documenter.getpostman.com/view/15462060/Tzm9jumT)
 
+
+[Application url](https://receipt-api-staging.herokuapp.com/)
+
 #### Installation
 ```bash
 git clone https://github.com/marvelous-benji/receipt-generator.git
@@ -49,6 +52,7 @@ finally run pip install -r requirements.txt
     For Unix(that is mac or linux)
     in the project root, enter: export SECRET_KEY={your_secret_key}
     export DJANGO_SETTINGS_MODULE=config.settings.mysettings
+    export DOCUMENTER_URL={{The Documentation Url}}
     python manage.py  makemigrations         
     python manage.py migrate
     Then python manage.py runserver
